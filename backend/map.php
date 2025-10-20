@@ -43,14 +43,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <div class="container">
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-sm-12 col-md-4">
+                <h1>Show map locations</h1>
                 <form action="" method="post">
                     <div class="form-group my-4">
                         <label for="">Congregation</label>
                         <select class="form-control" name="congregation" id="">
-                            <?php foreach ($congregations as $name => $congregation) : ?>
-                                <option value="<?= $name ?>"><?= $congregation ?></option>
+                            <?php foreach ($congregations as $congregation) : ?>
+                                <option value="<?= $congregation['code'] ?>"><?= $congregation['name'] ?></option>
                             <?php endforeach ?>
                         </select>
 
@@ -60,10 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </div>
                 </form>
+                <?php include('links.php'); ?>
+
             </div>
             <div class="col-sm-12 col-md-12">
                 <?php if ($data) : ?>
-                    <h1>Locations of <?= $congregation; ?> members</h1>
+                    <h1>Locations of <?= $query; ?> members</h1>
                     <div id="map" style="height: 440px; border: 1px solid #AAA;"></div>
 
                     <script>

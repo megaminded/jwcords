@@ -31,17 +31,18 @@
             <dd class="col-sm-9">{{ gps.latitude }}</dd>
           </dl>
           <button v-if="sent" @click="refresh()">REFRESH</button>
-          <div v-else>
+          <form @submit.prevent="save" v-else>
             <div class="form-floating mb-3">
-              <select v-model="gps.congregation" id="" class="form-control">
-                <option value="" v-for="congregation in congregations" :value="congregation.code">{{ congregation.name
-                }}</option>
+              <select required v-model="gps.congregation" id="" class="form-control">
+                <option v-for="congregation in congregations" :value="congregation.code">
+                  {{ congregation.name }}
+                </option>
               </select>
               <label for="formId1">Your Congregation</label>
             </div>
             <div class="form-group">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" v-model="gps.name" required id="formId1" placeholder="" />
+                <input required type="text" class="form-control" v-model="gps.name" id="formId1" placeholder="" />
                 <label for="formId1">Family Head Name</label>
               </div>
               <div class="form-floating mb-3">
@@ -54,9 +55,9 @@
                   required id="formId1" placeholder="" />
                 <label for="formId1">Number of publishers</label>
               </div>
-              <button type="submit" class="btn btn-primary" @click="save">Submit</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

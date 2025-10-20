@@ -28,12 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container">
         <div class="row mt-4">
             <div class="col-sm-12 col-md-4">
+                <h1>Download locations</h1>
                 <form action="" method="post">
                     <div class="form-group my-4">
                         <label for="">Congregation</label>
                         <select class="form-control" name="congregation" id="">
-                            <?php foreach ($congregations as $name => $congregation) : ?>
-                                <option value="<?= $name ?>"><?= $congregation ?></option>
+                            <?php foreach ($congregations as $congregation) : ?>
+                                <option value="<?= $congregation['code'] ?>"><?= $congregation['name'] ?></option>
                             <?php endforeach ?>
                         </select>
 
@@ -43,13 +44,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </div>
                 </form>
+                <?php include('links.php'); ?>
             </div>
             <div class="col-sm-12 col-md-8">
                 <?php if ($data) : ?>
-                    <h1><?= $query; ?></h1>
-                    <table class="table table-bordered">
+                    <h1 class="text-uppercase">Publisher Locations</h1>
+                    <h2>Name of Congregation: <?= $query; ?></h2>
+                    <table class="table table-bordered ">
                         <thead>
-                            <tr>
+                            <tr class="table-warning">
                                 <th>Family Head</th>
                                 <th>Longitude</th>
                                 <th>Latitude</th>
@@ -57,17 +60,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </tr>
                         </thead>
                         <tbody>
+                            <?php $publishers = 0; ?>
+                            <?php $index = 0; ?>
                             <?php while ($row = $data->fetch_assoc()): ?>
+                                <?php $count = is_numeric($row['publishers']) ? $row['publishers'] : 0 ?>
+                                <?php $publishers = $publishers + $count;  ?>
+                                <?php $index++; ?>
                                 <tr>
-                                    <td>
-                                        <b class="d-block"><?= strtoupper($row['name']) ?></b>
+                                    <td class="text-danger">
+                                        <b class="d-block text-capitalize"><?= strtoupper($row['name']) ?></b>
                                         <small><?= $row['phone']; ?></small>
                                     </td>
-                                    <td><?= $row['longitude'] ?></td>
-                                    <td><?= $row['latitude'] ?></td>
-                                    <td><?= $row['publishers'] ?></td>
+                                    <td class="text-danger"><?= $row['longitude'] ?></td>
+                                    <td class="text-danger"><?= $row['latitude'] ?></td>
+                                    <td class="text-danger"><?= $row['publishers'] ?></td>
                                 </tr>
                             <?php endwhile; ?>
+                            <tr>
+                                <td colspan="3">Total Family:</td>
+                                <td><?= $index; ?></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">Total Publishers:</td>
+                                <td><?= $publishers; ?></td>
+                            </tr>
                         </tbody>
                     </table>
                 <?php else : ?>
