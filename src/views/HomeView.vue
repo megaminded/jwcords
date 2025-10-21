@@ -79,9 +79,9 @@ const loading = ref(true);
 const error = ref(false);
 const sent = ref(false);
 
-// const base = reactive(`${window.location.href}backend/`);
+const base = ref("https://jwfamily.megamindsetsolutions.com/backend/");
 
-const base = ref("http://127.0.0.1:8000/");
+// const base = ref("http://127.0.0.1:8000/");
 
 
 const congregations = ref([]);

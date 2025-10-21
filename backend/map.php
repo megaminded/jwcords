@@ -67,28 +67,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="col-sm-12 col-md-12">
                 <?php if ($data) : ?>
                     <h1>Locations of <?= $query; ?> members</h1>
-                    <div id="map" style="height: 440px; border: 1px solid #AAA;"></div>
+                    <div id="map" style="height: 100vh; border: 1px solid #AAA;"></div>
 
                     <script>
                         const markers = <?= $markers; ?>;
-                        console.log(markers);
 
                         var map = L.map('map', {
                             center: [20.0, 5.0],
                             minZoom: 3,
-                            zoom: 2
+                            zoom: 5
                         });
 
                         for (var i = 0; i < markers.length; ++i) {
+                            console.log("Adding:", markers[i].lng);
                             L.marker([markers[i].lat, markers[i].lng])
-                                .bindPopup('<a href="' + markers[i].url + '" target="_blank" rel="noopener">' + markers[i].name + '</a>')
+                                .bindPopup(markers[i].name)
+                                .openPopup()
                                 .addTo(map);
                         }
 
-                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            maxZoom: 19,
-                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                        }).addTo(map);
+                        // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        //     maxZoom: 19,
+                        //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        // }).addTo(map);
+
+                        // L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                        //     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                        // }).addTo(map);
+
+
+                        // L.tileLayer.wms("http://ows.mundialis.de/services/service?", {
+                        //     layers: "TOPO-OSM-WMS",
+                        //     format: "image/png",
+                        //     transparent: true
+                        // }).addTo(map);
+
+                        L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
+                            maxZoom: 20,
+                            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+                        });
                     </script>
                 <?php else : ?>
 
