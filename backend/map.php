@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     while ($row = $data->fetch_assoc()) {
         array_push($items, [
             "name" => $row['name'],
+            "publishers" => $row['publishers'],
             "lat" => $row['latitude'],
             "lng" => $row['longitude']
         ]);
@@ -28,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <head profile="http://gmpg.org/xfn/11">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossorigin="" />
@@ -73,15 +76,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         const markers = <?= $markers; ?>;
 
                         var map = L.map('map', {
-                            center: [20.0, 5.0],
-                            minZoom: 3,
+                            center: [5.0, 8.0],
+                            minZoom: 5,
                             zoom: 5
                         });
 
                         for (var i = 0; i < markers.length; ++i) {
-                            console.log("Adding:", markers[i].lng);
+                            p = new L.Popup({
+                                    autoClose: false,
+                                    closeOnClick: false
+                                })
+                                .setContent(`${markers[i].name}: ${markers[i].publishers}`);
+                            // .setLatLng(obj.pos);
+
                             L.marker([markers[i].lat, markers[i].lng])
-                                .bindPopup(markers[i].name)
+                                .bindPopup(p)
                                 .openPopup()
                                 .addTo(map);
                         }
